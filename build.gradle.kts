@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "1.9.25"
+    kotlin("kapt") version "1.9.25"
     kotlin("plugin.spring") version "1.9.25"
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
@@ -29,6 +30,8 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
     implementation("org.springdoc:springdoc-openapi-ui:1.8.0")
 
@@ -42,6 +45,12 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:5.6.2")
     testImplementation("io.kotest:kotest-assertions-core:5.6.2")
     testImplementation("io.kotest:kotest-property:5.6.2")
+}
+
+kapt {
+    arguments {
+        arg("querydsl.sourceDir", "${project.layout.buildDirectory}/generated/querydsl")
+    }
 }
 
 kotlin {

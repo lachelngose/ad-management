@@ -1,0 +1,120 @@
+@startuml
+
+entity User {
+    Long id
+    String username
+    String password
+    Set<UserRole> roles
+    Boolean isDeleted
+    LocalDateTime createdAt
+    LocalDateTime updatedAt
+    LocalDateTime deletedAt
+}
+
+entity Customer {
+    Long id
+    String name
+    Boolean isDeleted
+    LocalDateTime createdAt
+    LocalDateTime updatedAt
+    LocalDateTime deletedAt
+}
+
+entity Campaign {
+    Long id
+    String name
+    LocalDateTime startDate
+    LocalDateTime endDate
+    List<Target> targets
+    Double budget
+    Boolean isActive
+    PaymentStatus paymentStatus
+    Boolean isDeleted
+    LocalDateTime createdAt
+    LocalDateTime updatedAt
+    LocalDateTime deletedAt
+}
+
+entity Creative {
+    Long id
+    String title
+    String url
+    String thumbnail
+    LocalDateTime createdAt
+    LocalDateTime updatedAt
+}
+
+entity AdImpression {
+    Long id
+    String videoId
+    String videoTitle
+    Long campaignId
+    String campaignName
+    Long creativeId
+    String creativeTitle
+    LocalDate impressionDate
+    Long impressionCount
+    Long viewCount
+    Double cost
+    Long clickCount
+}
+
+entity VideoStatus {
+    Long id
+    String videoId
+    Long campaignId
+    Status status
+}
+
+entity PaidHistory {
+    Long id
+    Long customerId
+    Long campaignId
+    Long paymentInfoId
+    Double amount
+    LocalDateTime paidAt
+}
+
+entity PaymentInfo {
+    Long id
+    Long customerId
+    String paymentMethod
+    String paymentCustomerId
+}
+
+enum UserRole {
+    ADMIN
+    USER
+}
+
+enum PaymentStatus {
+    REGISTERED
+    PENDING
+    PAID
+    FAILED
+    NONE
+}
+
+enum Status {
+    ALLOWED
+    BLOCKED
+}
+
+User }|--|| Customer
+User }|..|| UserRole
+
+Customer ||--o{ Campaign
+Campaign ||--o{ Creative
+
+Campaign ||--o{ AdImpression
+Campaign ||--o{ PaidHistory
+Campaign }|..|| PaymentStatus
+
+Customer ||--o{ PaymentInfo
+PaymentInfo ||--o{ PaidHistory
+PaidHistory }|..|| PaymentStatus
+
+Campaign ||--o{ VideoStatus
+VideoStatus }|..|| Status
+
+@enduml

@@ -1,1 +1,1 @@
-rootProject.name = "ad-mangement"
+rootProject.name = "ad-management"
