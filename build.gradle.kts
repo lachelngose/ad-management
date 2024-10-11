@@ -29,11 +29,12 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt:0.9.1")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     runtimeOnly("org.postgresql:postgresql")
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
-    implementation("org.springdoc:springdoc-openapi-ui:1.8.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     testImplementation("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {

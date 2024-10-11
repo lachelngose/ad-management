@@ -35,7 +35,7 @@ class PaymentService(
     }
 
     fun processPayment(request: PaymentRequest): PaymentResponse {
-        val customer = customerService.getCustomerById(request.customerId)
+        val customer = customerService.getCustomerById(request.userInfo.customerId)
         val campaign = campaignService.getCampaignById(request.campaignId, customer.id)
         val paymentInfo = paymentInfoRepository.findByIdAndCustomer_Id(id = request.paymentInfoId, customerId = customer.id)
             ?: throw ErrorType.PAYMENT_INFO_NOT_FOUND.toServiceException()
@@ -50,10 +50,15 @@ class PaymentService(
         )
 
         paidHistoryRepository.save(paidHistory)
+            .also {
+                if (it.status == PaymentStatus.PAID) {
+                    campaignService.activateCampaign(campaignId = campaign.id, customerId = customer.id)
+                }
+            }
 
         return PaymentResponse(
             paymentId = paidHistory.transactionId,
-            customerId = request.customerId,
+            customerId = request.userInfo.customerId,
             amount = request.amount,
             paymentMethod = paymentInfo.paymentMethod,
             paidStatus = paidHistory.status,

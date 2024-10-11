@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface VideoAllowedStatusRepository: JpaRepository<VideoAllowedStatus, Long> {
-    fun findAllByCampaignId(campaignId: Long): List<VideoAllowedStatus>
+    fun findAllByCampaignIdIn(campaignId: List<Long>): List<VideoAllowedStatus>
 }
