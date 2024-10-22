@@ -3,7 +3,18 @@ package dev.lachelngose.adManagement.domain.campaign.model
 import dev.lachelngose.adManagement.domain.campaign.model.converter.AdTargetConverter
 import dev.lachelngose.adManagement.domain.payment.model.PaymentStatus
 import dev.lachelngose.adManagement.domain.user.model.Customer
-import jakarta.persistence.*
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Convert
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
+import jakarta.persistence.OneToMany
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.SQLDelete
@@ -54,9 +65,10 @@ class Campaign(
 
     @UpdateTimestamp
     @Column(nullable = false)
-    lateinit var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime? = null
 
     var deletedAt: LocalDateTime? = null
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     var isDeleted: Boolean = false
 }

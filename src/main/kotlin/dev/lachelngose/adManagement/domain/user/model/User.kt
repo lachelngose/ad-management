@@ -1,5 +1,6 @@
 package dev.lachelngose.adManagement.domain.user.model
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.ElementCollection
 import jakarta.persistence.Entity
@@ -10,7 +11,7 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.CascadeType
+import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.SQLDelete
@@ -18,22 +19,20 @@ import org.hibernate.annotations.UpdateTimestamp
 import java.time.LocalDateTime
 
 @Entity
-@SQLDelete(sql = "UPDATE user set deleted_at = now(), is_deleted = true WHERE id = ?")
+@Table(name = "users")
+@SQLDelete(sql = "UPDATE users set deleted_at = now(), is_deleted = true WHERE id = ?")
 class User(
     @NotNull
     val username: String,
-
     @NotNull
     val password: String,
-
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR(20)")
     @ElementCollection(fetch = FetchType.EAGER)
     val roles: Set<UserRole>,
-
     @NotNull
     @ManyToOne(cascade = [CascadeType.ALL])
-    val customer: Customer
+    val customer: Customer,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,9 +44,10 @@ class User(
 
     @UpdateTimestamp
     @Column(nullable = false)
-    lateinit var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime? = null
 
     var deletedAt: LocalDateTime? = null
 
+    @Column(columnDefinition = "BOOLEAN DEFAULT false")
     var isDeleted: Boolean = false
 }

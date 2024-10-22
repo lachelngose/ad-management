@@ -24,7 +24,7 @@ class Creative(
     @NotNull
     val createdBy: Long,
 
-    val updatedBy: Long? = null
+    val updatedBy: Long? = null,
 ) {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,5 +36,5 @@ class Creative(
 
     @UpdateTimestamp
     @Column(nullable = false)
-    lateinit var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime? = null
 }

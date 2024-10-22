@@ -1,7 +1,16 @@
 package dev.lachelngose.adManagement.domain.payment.model
 
 import dev.lachelngose.adManagement.domain.user.model.Customer
-import jakarta.persistence.*
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import jakarta.validation.constraints.NotNull
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -12,9 +21,9 @@ class PaymentInfo(
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
     val customer: Customer,
-
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(20)")
     val paymentMethod: PaymentMethod,
-
     val paymentCustomerId: String, // 외부 결제 솔루션의 customer id
 ) {
     @Id
@@ -27,5 +36,5 @@ class PaymentInfo(
 
     @UpdateTimestamp
     @Column(nullable = false)
-    lateinit var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime? = null
 }

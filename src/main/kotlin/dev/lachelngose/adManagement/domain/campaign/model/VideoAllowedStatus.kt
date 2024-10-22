@@ -28,10 +28,10 @@ class VideoAllowedStatus(
 
     @UpdateTimestamp
     @Column(nullable = false)
-    lateinit var updatedAt: LocalDateTime
+    var updatedAt: LocalDateTime? = null
 }
 
 enum class VideoStatus {
     ALLOWED,
-    BLOCKED
+    BLOCKED,
 }
